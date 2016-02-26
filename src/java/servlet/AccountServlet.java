@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package servlet;
 
 import java.io.IOException;
@@ -28,10 +27,24 @@ import model.Account;
  */
 @WebServlet("/account")
 public class AccountServlet extends HttpServlet {
-  Account account = new Account();   
-  
-  @Override
+
+    Account account = new Account();
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      account.getBalance();
+        account.getBalance();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+        String with = req.getParameter("withdraw");
+        String dep = req.getParameter("deposit");
+        if (with != null) {
+            double withdraw = Double.parseDouble(req.getParameter("withdraw"));
+            account.withdraw(withdraw);
+        } else if (dep != null) {
+            double deposit = Double.parseDouble(req.getParameter("deposit"));
+            account.deposit(deposit);
+        }
     }
 }
