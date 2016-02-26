@@ -15,8 +15,6 @@
  */
 package servlet;
 
-import java.io.IOException;
-import static java.lang.Boolean.TRUE;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,23 +30,22 @@ public class AccountServlet extends HttpServlet {
     Account account = new Account();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) {
+        res.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setDateHeader("Expires", 0);
         account.getBalance();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) {
-        String with = req.getParameter("withdraw");
-        String dep = req.getParameter("deposit");
-        String clos = req.getParameter("close");
-        if (with != null) {
-            double withdraw = Double.parseDouble(req.getParameter("withdraw"));
+        if (!"".equals(req.getParameter("withdraw"))) {
+            Double withdraw = Double.valueOf(req.getParameter("withdraw"));
             account.withdraw(withdraw);
-        } else if (dep != null) {
-            double deposit = Double.parseDouble(req.getParameter("deposit"));
+        } else if (!"".equals( req.getParameter("deposit"))) {
+            Double deposit = Double.valueOf(req.getParameter("deposit"));
             account.deposit(deposit);
-        } else if ("true".equals(clos)){
-            double close = Double.parseDouble(clos);
+        } else if ("true".equals(req.getParameter("close"))){
             account.close();
     }
 }

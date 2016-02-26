@@ -16,7 +16,7 @@
 
 package model;
 
-import javax.faces.bean.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 
 /**
  * Stores an account balance and provides some basic methods to manipulate the balance
